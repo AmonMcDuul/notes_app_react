@@ -5,6 +5,10 @@ let getTime = (note) => {
   return new Date(note.updated).toLocaleDateString();
 };
 
+let getCrossOut = (note) => {
+  return note.crossout;
+};
+
 let getTitle = (note) => {
   const title = note.body.split("\n")[0];
   if (title.length > 45) {
@@ -28,11 +32,24 @@ const ListItem = ({ note }) => {
   return (
     <Link to={`/note/${note.id}`}>
       <div className="notes-list-item">
-        <h3>{getTitle(note)}</h3>
-        <p>
-          <span>{getTime(note)}</span>
-          {getContent(note)}
-        </p>
+        {getCrossOut(note) !== 0 ? (
+          <>
+            <div className="notes-cross-out">
+              <h3>{getTitle(note)}</h3>
+              <p>
+                {getTime(note)} {getContent(note)}
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
+            <h3>{getTitle(note)}</h3>
+            <p>
+              <span>{getTime(note)}</span>
+              {getContent(note)}
+            </p>
+          </>
+        )}
       </div>
     </Link>
   );

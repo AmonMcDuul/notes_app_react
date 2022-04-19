@@ -22,18 +22,42 @@ const Note = ({ match, history }) => {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ ...note, updated: new Date() }),
+      body: JSON.stringify({ ...note, updated: new Date(), crossout: 0 }),
     });
   };
 
   let updateNote = async () => {
+    let crossOutState = note.crossout;
     await fetch(`http://localhost:5000/notes/${noteId}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ ...note, updated: new Date() }),
+      body: JSON.stringify({
+        ...note,
+        updated: new Date(),
+        crossout: crossOutState,
+      }),
     });
+  };
+
+  let crossOutNote = async () => {
+    let crossOutState = 1;
+    if (note.crossout === 1) {
+      crossOutState = 0;
+    }
+    await fetch(`http://localhost:5000/notes/${noteId}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        ...note,
+        updated: new Date(),
+        crossout: crossOutState,
+      }),
+    });
+    history.push("/");
   };
 
   let deleteNote = async () => {
@@ -67,7 +91,10 @@ const Note = ({ match, history }) => {
           </Link>
         </h3>
         {noteId !== "new" ? (
-          <button onClick={deleteNote}>Delete</button>
+          <>
+            <button onClick={crossOutNote}>CrossOut</button>
+            <button onClick={deleteNote}>Delete</button>
+          </>
         ) : (
           <button onClick={handleSubmit}>Done</button>
         )}

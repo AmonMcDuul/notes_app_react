@@ -21,6 +21,7 @@ const NotesPage = () => {
       <div className="notes-header">
         <h2 className="notes-title">&#9782;Notes</h2>
         <input
+          className="search-bar"
           type="text"
           placeholder="search..."
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -30,7 +31,7 @@ const NotesPage = () => {
       <div className="notes-list">
         {notes
           .filter((val) => {
-            if (searchTerm == "") {
+            if (searchTerm === "") {
               return val;
             } else if (
               val.body.toLowerCase().includes(searchTerm.toLowerCase())
