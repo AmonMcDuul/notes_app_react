@@ -14,16 +14,33 @@ const NotesPage = () => {
     setNotes(data);
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <div className="notes">
       <div className="notes-header">
         <h2 className="notes-title">&#9782;Notes</h2>
+        <input
+          type="text"
+          placeholder="search..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <p className="notes-count">{notes.length}</p>
       </div>
       <div className="notes-list">
-        {notes.map((note, index) => (
-          <ListItem key={index} note={note} />
-        ))}
+        {notes
+          .filter((val) => {
+            if (searchTerm == "") {
+              return val;
+            } else if (
+              val.body.toLowerCase().includes(searchTerm.toLowerCase())
+            ) {
+              return val;
+            }
+          })
+          .map((note, index) => (
+            <ListItem key={index} note={note} />
+          ))}
       </div>
       <AddButton />
     </div>
